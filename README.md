@@ -8,3 +8,10 @@ where -b -> backs up text file
       -i -> insensitive replacement
       -f -> replaces first occurence
       -l -> replaces last occurence
+      
+      
+Structure
+replace OPT <from> <to> -- <filename> [<filename>]* 
+replace OPT -- <from><to> -- <filename> [<filebane>]* alternative for strings that include OPTs
+
+
