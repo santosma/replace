@@ -12,7 +12,7 @@ where -b -> backs up text file\
       
 Structure\
 replace OPT, from, to, -- filename, [filename]*\
-replace OPT, -- from, to, -- filename, [filebane]* alternative for strings that include OPTs\
+replace OPT, -- from, to, -- filename, [filenane]* alternative for strings that include OPTs\
 where "--" acts as flag
 
 
