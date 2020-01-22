@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
 /*
@@ -55,7 +56,7 @@ public class Main {
         }
         
         if(usageError)
-            usage();
+            correctFormatMessage();
 
     }
     
@@ -129,17 +130,23 @@ public class Main {
     
     
     private static void processFiles(
-                                boolean i, boolean b, boolean f, boolean l,
+                                boolean insensitiveOp, boolean backUpOp, boolean firstOp, boolean lastOp,
                                 ArrayList<String> filePaths, String from, String to){
-        File tempBackUp;
+      
         for(int j = 0; j < filePaths.size(); j++){
-            if(b){
+            //if backup op is selected, backup before modifications
+            if(backUpOp){
                 try {
-                    tempBackUp = File.createTempFile(filePaths.get(j), ".bck");
-                    Files.copy(Paths.get(filePaths.get(j)), Paths.get(tempBackUp.getAbsolutePath()));
-                } catch (IOException e) {}
+                    Path currentPath = Paths.get(filePaths.get(j));
+                    File backUpFile = new File(filePaths.get(j)+".bck");
+                    Path backUpPath = Paths.get(filePaths.get(j)+".bck");
+                    Files.copy(currentPath,backUpPath, 
+                            StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    System.err.println("Error backing up file");
+                }
             }
-            modifyFile(i, f, l, from, to, filePaths.get(j));
+            modifyFile(insensitiveOp, firstOp, lastOp, from, to, filePaths.get(j));
         }
         
     }
@@ -198,8 +205,8 @@ public class Main {
         }
     }
 
-    private static void usage() {
-        System.err.println("Usage: Replace [-b] [-f] [-l] [-i] <from> <to> -- " + "<filename> [<filename>]*" );
+    private static void correctFormatMessage() {
+        System.err.println("Format: Replace [-b] [-f] [-l] [-i] <from> <to> -- " + "<filename> [<filename>]*" );
     }
 
 }
